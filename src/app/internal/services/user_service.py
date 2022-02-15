@@ -1,9 +1,59 @@
-from typing import Optional
+import functools
+from typing import Optional, Type
 
 from app.internal.models import User
 
 
+class CreationFailureException(Exception):
+    message = "Ошибка создания пользователя"
+
+
+class GettingUserFailureException(Exception):
+    message = "Ошибка получения пользователя"
+
+
+class UpdatingUserFailureException(Exception):
+    pass
+
+
+class NotFoundException(Exception):
+    message = "Не найден пользователь"
+
+
+def raises(exception: Type[Exception]):
+    def decorator(func):
+        @functools.wraps(func.__name__)
+        def wrapper(*args, **kwargs):
+            try:
+                return func(*args, **kwargs)
+            except Exception as e:
+                raise exception() from e
+
+        return wrapper
+
+    return decorator
+
+
 class UserService:
     @staticmethod
+    @raises(GettingUserFailureException)
     def get_user_by_external_identifier(external_identifier: str) -> Optional[User]:
-        return User.objects.filter(external_identifier=external_identifier).first()
+        if not (user := User.objects.filter(external_identifier=external_identifier).first()):
+            raise NotFoundException()
+        return user
+
+    @staticmethod
+    @raises(CreationFailureException)
+    def create_user(external_identifier: str, username: str) -> None:
+        User.objects.create(
+            external_identifier=external_identifier,
+            username=username,
+        )
+
+    @staticmethod
+    @raises(UpdatingUserFailureException)
+    def set_user_phone(external_identifier: str, phone: str) -> None:
+        if not (user := User.objects.filter(external_identifier=external_identifier).first()):
+            raise NotFoundException()
+        user.phone_number = phone
+        user.save()

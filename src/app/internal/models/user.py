@@ -6,8 +6,8 @@ class User(Model):
     external_identifier = PositiveBigIntegerField(primary_key=True)
     username = CharField(max_length=32)
     fullname = CharField(max_length=30)
-    phoneNumberRegex = RegexValidator(regex=r"^\+?\d?\d{8,15}$")
-    phoneNumber = CharField(validators=[phoneNumberRegex], max_length=16, unique=True)
+    phone_number_regex = RegexValidator(regex=r"^\+?\d?\d{8,15}$")
+    phone_number = CharField(validators=[phone_number_regex], max_length=16, unique=True)
 
     def __str__(self):
         return f'@{self.username or self.fullname}'
@@ -17,5 +17,5 @@ class User(Model):
             "external_identifier": self.external_identifier,
             "username": self.username,
             "fullname": self.fullname,
-            "phone": self.phoneNumber
+            "phone": self.phone_number
         }
