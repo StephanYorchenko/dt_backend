@@ -30,7 +30,7 @@ def to_json(func):
     def wrapper(request):
         response = func(request)
         if response is not None:
-            return JsonResponse(data=response.__dict__(), status=200)
+            return JsonResponse(data=response, status=200)
 
     return wrapper
 

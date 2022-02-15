@@ -1,4 +1,5 @@
 import functools
+import re
 from typing import Optional, Type
 
 from app.internal.models import User
@@ -44,10 +45,11 @@ class UserService:
 
     @staticmethod
     @raises(CreationFailureException)
-    def create_user(external_identifier: str, username: str) -> None:
-        User.objects.create(
-            external_identifier=external_identifier,
-            username=username,
+    def create_user(external_identifier: str, username: str, fullname: str) -> None:
+        User.objects.get_or_create(
+                external_identifier=external_identifier,
+                username=username,
+                fullname=fullname
         )
 
     @staticmethod
@@ -55,5 +57,8 @@ class UserService:
     def set_user_phone(external_identifier: str, phone: str) -> None:
         if not (user := User.objects.filter(external_identifier=external_identifier).first()):
             raise NotFoundException()
-        user.phone_number = phone
-        user.save()
+        if re.match(r"^\+?\d?\d{8,15}$", phone):
+            user.phone_number = phone
+            user.save()
+        else:
+            raise UpdatingUserFailureException()
