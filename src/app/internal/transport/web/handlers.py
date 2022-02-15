@@ -1,6 +1,5 @@
 from app.internal.services.user_service import UserService
-
-from app.internal.transport.web.middlewares import get_only, handle_empty, to_json, parse_query_param
+from app.internal.transport.web.middlewares import get_only, handle_empty, parse_query_param, to_json
 
 
 @get_only
@@ -13,5 +12,5 @@ def me_info(external_identifier: str):
         "external_identifier": user.external_identifier,
         "username": user.username,
         "fullname": user.fullname,
-        "phone": user.phone_number
+        "phone": user.phone_number,
     }

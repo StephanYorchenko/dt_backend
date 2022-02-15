@@ -1,15 +1,15 @@
 import functools
 from typing import List
 
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 
 def get_only(func):
     @functools.wraps(func.__name__)
     def wrapper(request):
-        if request.method == 'GET':
+        if request.method == "GET":
             return func(request)
-        return HttpResponse(f"Not right type of response", status=405)
+        return HttpResponse("Not right type of response", status=405)
 
     return wrapper
 
@@ -20,7 +20,7 @@ def handle_empty(func):
         response = func(request)
         if response is not None:
             return func(request)
-        return HttpResponse(f'Does not exist', status=403)
+        return HttpResponse("Does not exist", status=403)
 
     return wrapper
 

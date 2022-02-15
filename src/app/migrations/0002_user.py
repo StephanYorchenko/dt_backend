@@ -7,18 +7,25 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0001_initial'),
+        ("app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('external_identifier', models.IntegerField(unique=True, verbose_name='Telegram ID')),
-                ('username', models.CharField(max_length=32)),
-                ('fullname', models.CharField(max_length=30)),
-                ('phone_number', models.CharField(blank=True, max_length=16, validators=[django.core.validators.RegexValidator(regex='^\\+?\\d?\\d{8,15}$')])),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("external_identifier", models.IntegerField(unique=True, verbose_name="Telegram ID")),
+                ("username", models.CharField(max_length=32)),
+                ("fullname", models.CharField(max_length=30)),
+                (
+                    "phone_number",
+                    models.CharField(
+                        blank=True,
+                        max_length=16,
+                        validators=[django.core.validators.RegexValidator(regex="^\\+?\\d?\\d{8,15}$")],
+                    ),
+                ),
             ],
         ),
     ]

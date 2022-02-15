@@ -46,11 +46,7 @@ class UserService:
     @staticmethod
     @raises(CreationFailureException)
     def create_user(external_identifier: str, username: str, fullname: str) -> None:
-        User.objects.get_or_create(
-                external_identifier=external_identifier,
-                username=username,
-                fullname=fullname
-        )
+        User.objects.get_or_create(external_identifier=external_identifier, username=username, fullname=fullname)
 
     @staticmethod
     @raises(UpdatingUserFailureException)

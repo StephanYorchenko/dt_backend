@@ -28,7 +28,7 @@ def prevent_errors(func):
     def wrapper(update: Update, context: CallbackContext) -> HandlerResponse | None:
         try:
             return func(update, context)
-        except Exception as e:
+        except Exception:
             return None, None
 
     return wrapper
@@ -43,7 +43,7 @@ def check_auth(func):
     def wrapper(update: Update, context: CallbackContext) -> HandlerResponse:
         try:
             user = UserService.get_user_by_external_identifier(external_identifier=update.effective_user.id)
-        except GettingUserFailureException as e:
+        except GettingUserFailureException:
             raise Unauthorized()
         else:
             if user.phone_number:

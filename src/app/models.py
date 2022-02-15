@@ -1,1 +1,1 @@
-from app.internal.models import User, AdminUser
+from app.internal.models import AdminUser, User
